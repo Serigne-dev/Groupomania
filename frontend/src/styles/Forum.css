@@ -1,0 +1,16 @@
+.publicationEtProfil{
+	display: flex;
+	flex-direction: row;
+}
+
+.publication{
+	width: 70%;
+}
+
+.profil{
+	width: 30%;
+}
+
+ul{
+list-style-type: none;
+}

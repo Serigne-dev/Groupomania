@@ -1,0 +1,4 @@
+.profils{
+	display: flex;
+	flex-direction: column;
+}
