@@ -2,20 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const helmet = require("helmet");
-const mysql = require ('mysql');
-const connection = mysql.createConnection ({
-  host: 'localhost',
-  user: 'root',
-  password: 'Serigne1*',
-  //database: 'nom de la base de données'
-  port: 3306
-});
 const employesRoutes = require("./routes/employes"); // importe le routeur user
-
-connection.connect ((err) => {
-  if (err) throw err;
-  console.log ('Connecté!');
-});
+const articleRoutes = require("./routes/article");
 
 
 app.use((req, res, next) => {
@@ -29,12 +17,9 @@ app.use(bodyParser.json());
 
 app.use(helmet());
 
-app.use((req, res) => {
-   res.json({ message: 'Votre requête a bien été reçue !' }); 
-   console.log("user : "+process.env.SQL_USER);
-});
 
 app.use("/", employesRoutes);// enregistrement de la route user
+app.use("/forum", articleRoutes);
 
 
 module.exports = app;

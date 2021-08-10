@@ -12,9 +12,12 @@ function Profils(){
     				Prenom :
     				<input type="text" name="Prenom" />
   				</label>
+        			<label for="mail">e-mail:
+        			<input type="email" id="mail" name="user_mail" />
+        		</label>
   				<label>
     				Description :
-    				<input type="text" name="Description" />
+    				<textarea id="msg" name="user_message"></textarea>
   				</label>
 			</form>
 		</div>

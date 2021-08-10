@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS Article;
 CREATE TABLE Article (
  id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
  Employe_id SMALLINT UNSIGNED NOT NULL,
+ Title varchar(50) NOT NULL,
  Texte TEXT,
  Photo_url varchar(255) DEFAULT NULL,
  Heure DATETIME,
@@ -41,3 +42,10 @@ CREATE TABLE Commentaires (
     REFERENCES Article(id)   
 )
 ENGINE=INNODB;
+
+
+INSERT INTO Employes
+VALUES (1, 'admin', 'principal', 'admin@email.com', 'administrateur', '');
+
+INSERT INTO Article
+VALUES ('1','1','titre', 'je suis administrateur', '', now());
