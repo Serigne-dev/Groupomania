@@ -18,8 +18,9 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 
-app.use("/", employesRoutes);// enregistrement de la route user
+app.use("/auth", employesRoutes);// enregistrement de la route user
 app.use("/forum", articleRoutes);
+
 
 
 module.exports = app;

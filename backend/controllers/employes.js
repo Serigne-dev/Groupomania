@@ -1,13 +1,15 @@
 const bcrypt = require('bcrypt'); // package de chiffrement
 const jwt = require('jsonwebtoken'); // pour créer et verifier les tokens
 var CryptoJS = require("crypto-js"); // permet de crypter l'email
+const db = require("../config/config_db");
+const mysql = require("mysql");
 
 function validationPassword(password){
   if (password.match( /[0-9]/g) && 
                     password.match( /[A-Z]/g) && 
                     password.match(/[a-z]/g) && 
                     password.match( /[^a-zA-Z\d]/g) &&
-                    password.length >= 9){
+                    password.length >= 8){
              } 
             else {
                 throw 'Mot de passe trop faible.'; } 
@@ -17,21 +19,28 @@ function validationPassword(password){
 exports.signup = (req, res, next) => {
   try{
     validationPassword(req.body.password);
-    bcrypt.hash(req.body.password, 10) //fonction hashage de bcrypt, mot de passe salé 10fois
-    .then(hash => { // hash généré
-      const user = new User({ //création utilisateur avec mot de passe haché
-        email: CryptoJS.MD5(req.body.email).toString(),
-        password: hash
-      });
-      user.save() // enregistrement utilisateur
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
+    const email = CryptoJS.MD5(req.body.email).toString();
+    const password = null;
+    const createEmployeQuery = "insert into Employes (Nom, Prenom, Email, Password) VALUES (?,?,?,?)";
+    bcrypt.hash(req.body.password, 10) 
+    .then(hash => { 
+      password = hash;
+    const inserts = [req.body.nom, req.body.prenom, email, password];
+    const sql = mysql.format(createEmployeQuery, inserts);
+    console.log("sql:"+sql);
+    db.query(sql, (err,results) =>{
+      if(!err){
+        console.log('sauvegarde de l\'employe');
+        res.status(201).json({ message: 'Utilisateur créé !' });
+      }else{
+        res.status(400).json({ err });
+      }
+    })  
     })
     .catch(error => res.status(500).json({ error }));
   }catch(e){
     return res.status(401).json({e});
-  }
-	 
+  }	 
 };
 
 //pour que l'utilisateur se connecte
