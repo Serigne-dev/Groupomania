@@ -7,7 +7,7 @@ function validationPassword(password){
                     password.match( /[A-Z]/g) && 
                     password.match(/[a-z]/g) && 
                     password.match( /[^a-zA-Z\d]/g) &&
-                    password.length >= 8){
+                    password.length >= 9){
              } 
             else {
                 throw 'Mot de passe trop faible.'; } 
