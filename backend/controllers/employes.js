@@ -18,14 +18,13 @@ function validationPassword(password){
 //pour que l'utilisateur s'inscrive
 exports.signup = (req, res, next) => {
   try{
+    console.log("signup");
     validationPassword(req.body.password);
-    const email = CryptoJS.MD5(req.body.email).toString();
+    console.log("password validé" + req.body.password);
+    //const email = CryptoJS.MD5(req.body.email).toString();
     const password = null;
-    const createEmployeQuery = "insert into Employes (Nom, Prenom, Email, Password) VALUES (?,?,?,?)";
-    bcrypt.hash(req.body.password, 10) 
-    .then(hash => { 
-      password = hash;
-    const inserts = [req.body.nom, req.body.prenom, email, password];
+    const createEmployeQuery = "insert into Employes (Nom, Prenom, Email, Password, Photo_url) VALUES (?,?,?,?, ?)";
+    const inserts = [req.body.nom, req.body.prenom, req.body.email, req.body.password, ""];
     const sql = mysql.format(createEmployeQuery, inserts);
     console.log("sql:"+sql);
     db.query(sql, (err,results) =>{
@@ -35,9 +34,14 @@ exports.signup = (req, res, next) => {
       }else{
         res.status(400).json({ err });
       }
-    })  
+    }) 
+/*
+    bcrypt.hash(req.body.password, 10) 
+    .then(hash => { 
+      password = hash;
+     
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error })); */
   }catch(e){
     return res.status(401).json({e});
   }	 
