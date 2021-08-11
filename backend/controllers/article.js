@@ -32,3 +32,22 @@ exports.createArticle = (req, res, next) => {
     }
   });
 };
+
+exports.createCommentaire = (req, res, next) => {
+  console.log("creation d'un commentaire");
+  const commentaires = req.body.comment;
+  const idArticle = req.body.article;
+  const createPostQuery = "INSERT INTO commentaires (Employe_id, Texte, id_article) VALUES (?, ?, ?)";
+  const inserts = [1, commentaires, idArticle];
+  console.log("insert : "+inserts);
+  const sql = mysql.format(createPostQuery, inserts);
+  console.log("sql : "+sql);
+  db.query (sql, (err, results) => {
+    if (!err) {
+        console.log ('Sauvegarde du commentaire');
+        res.status(201).json({ message: "Commentaire sauvegardée" });
+    } else {
+        res.status(404).json({ err });
+    }
+  });
+};

@@ -15,6 +15,9 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import SendIcon from '@material-ui/icons/Send';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +47,11 @@ export default function PublicationsForum() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const[articles, setArticles] = useState([]);
+  const[comment, setComment] = useState(null);
+
+  function handleChangeComment(event) {
+        setComment(event.target.value);
+  }
 
 	useEffect(() => {
         // GET request using fetch inside useEffect
@@ -55,13 +63,35 @@ export default function PublicationsForum() {
     setExpanded(!expanded);
   };
 
-  return (
-  	<div>
-			<h1> Publications </h1>
-			<ul>
-				{articles.map(article => (
+  const handleSubmit = articleId => event => {
+        event.preventDefault();
+        alert('Le nom a été soumis : ' + comment);
+        fetch("http://localhost:4200/forum/comment", {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({comment: comment, article: articleId})
+      })
+          .then(res => res.json())
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
+  }
+
+  const SendButton = () => (
+  <IconButton>
+    <SendIcon />
+  </IconButton>
+  )
+
+  return <div>
+            <h1> Publications </h1>
+            <ul>
+                {articles.map(article => (
+
           <li key={article.id}>
-            <Card className={classes.root}>
+  <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -73,7 +103,7 @@ export default function PublicationsForum() {
             <MoreVertIcon />
           </IconButton>
         }
-        title=""
+        title={article.Title}
         subheader={article.Title}
       />
       <CardMedia
@@ -86,10 +116,51 @@ export default function PublicationsForum() {
           {article.Texte}
         </Typography>
       </CardContent>
+
+      <form onSubmit={handleSubmit(article.id)}>
+       <TextField
+                          id="outlined-full-width"
+                          label="Commentaire"
+                          style={{ margin: 8 }}
+                          placeholder="Ecrivez votre commentaire"
+                          style ={{width: '100%'}}
+
+                              multiline
+                              rows={4}
+                          margin="normal"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          variant="outlined"
+                          onChange={handleChangeComment}
+                          InputProps={{endAdornment:  <IconButton type="submit" className="iconButton" aria-label="search"> <SendButton />
+       </IconButton>}}/>
+
+       </form>
+
+      <CardActions disableSpacing>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <ul>
+            <li>commentaire 1</li>
+            <li>commentaire 2</li>
+          </ul>
+        </CardContent>
+      </Collapse>
     </Card>
-          </li>
+    </li>
         ))}
-			</ul>
-			</div>   
-  );
+            </ul>
+            </div>
 }

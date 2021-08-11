@@ -9,7 +9,6 @@ function HeaderForum(){
 					<ul>
 						<li><Link to={'/profils'}> Profil</Link></li>
 						<li><a href="#Equipe">Equipe</a></li>
-						<li><a href="#Notifications">Notifications</a></li>
 						<li><a href="#Deconnexion">Se deconnecter</a></li>
 					</ul>
 				</nav>

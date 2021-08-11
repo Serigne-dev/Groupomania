@@ -14,10 +14,7 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
-
 app.use(helmet());
-
-
 app.use("/auth", employesRoutes);// enregistrement de la route user
 app.use("/forum", articleRoutes);
 

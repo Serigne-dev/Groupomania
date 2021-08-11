@@ -3,22 +3,17 @@ import Header from './Header'
 import Forum from './forum/Forum'
 import {Link} from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 
 
 function CreationCompte(){
-    const [state, setState] = useState({nom:null,prenom:null, email:null, password:null});
     const [nom, setNom] = useState(null);
     const [prenom, setPrenom] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    // History context
+    const history = useHistory();
 
-
-function handleInput(event){
-    const name = event.target.name;
-    var partialState = {};
-    partialState[name] = event.target.value;
-    setState(partialState);;
-}
 
 function handleNom(event) {
         setNom(event.target.value)
@@ -45,7 +40,10 @@ function handleSubmit(event) {
           body: JSON.stringify({nom: nom, prenom : prenom, email: email, password: password})
       })
           .then(res => res.json())
-          .then(data => console.log(data))
+          .then(function(data){
+                console.log(data)
+                history.push("/forum");
+          })
           .catch(err => console.log(err));
       }
 	return <div> 
@@ -54,7 +52,7 @@ function handleSubmit(event) {
         <form onSubmit={handleSubmit} className='groupomania-connexion'>
             <label>
                     Nom :
-                    <input type="text" name="nom" value={state.nom} onChange={handleNom} />
+                    <input type="text" name="nom" onChange={handleNom} />
                 </label>
                 <label>
                     Prenom :
