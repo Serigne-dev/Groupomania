@@ -18,6 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
+import '../../styles/PublicationForum.css'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +66,6 @@ export default function PublicationsForum() {
 
   const handleSubmit = articleId => event => {
         event.preventDefault();
-        alert('Le nom a été soumis : ' + comment);
         fetch("http://localhost:4200/forum/comment", {
             method: 'POST',
             headers: {
@@ -117,7 +117,7 @@ export default function PublicationsForum() {
         </Typography>
       </CardContent>
 
-      <form onSubmit={handleSubmit(article.id)}>
+      <form onSubmit={handleSubmit(article.articleId)}>
        <TextField
                           id="outlined-full-width"
                           label="Commentaire"
@@ -153,8 +153,18 @@ export default function PublicationsForum() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <ul>
-            <li>commentaire 1</li>
-            <li>commentaire 2</li>
+            {article.comments.map(comment => (
+              <li className="cardComment" key={comment.Texte}> 
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                  {comment.Nom} {comment.Prenom}
+              </Typography>
+              <Typography className={classes.texte} color="textSecondary" gutterBottom>
+                {comment.Texte} 
+              </Typography>
+
+              </li>
+
+              ))}
           </ul>
         </CardContent>
       </Collapse>

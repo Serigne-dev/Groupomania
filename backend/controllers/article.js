@@ -1,17 +1,79 @@
 const db = require("../config/config_db");
 const mysql = require("mysql");
+var async = require('async');
+
+const querySelect = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id";
+
+const querySelectComments = "SELECT Commentaires.Texte, Commentaires.id_article, Employes.Nom, Employes.Prenom FROM Commentaires JOIN Employes ON Employes.id=Commentaires.employe_id WHERE Commentaires.id_article = ?";
+
+
 
 exports.getAllArticles = (req, res, next) => {
-  console.log("getting all posts");
-  db.query ('SELECT * FROM Article ', (err, results) => {
-    if (!err) {
-        console.log ('Données reçues de Db:');
-            res.status(200).json(results);
-        } else {
-            return next(new HttpError("Erreur de requête, les article n'ont pas pu être récupérées", 500));
+
+        const getArticles = () => {
+          return new Promise((resolve, reject) => {
+              try {
+                  const string = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id";
+                  // Requête
+                  db.query (string, (err, articles) => {
+                    if (!err) {
+                        resolve(articles);
+                    } else {
+                        reject(err);
+                    }
+                  });
+              } catch (err) {
+                  reject(err);
+              }
+          });
+    };
+
+     // Fetch comments par post
+    const getComments = (article_id) => {
+        return new Promise((resolve, reject) => {
+            try {
+                const string = "SELECT Commentaires.Id, Commentaires.Texte, Commentaires.id_article, Employes.Nom, Employes.Prenom FROM Commentaires JOIN Employes ON Employes.id=Commentaires.employe_id WHERE Commentaires.id_article = ?";
+                const inserts = [article_id];
+                const sql = mysql.format(string, inserts);
+
+                // Requête
+                db.query(sql, (error, comments) => {
+                   if (!error) {
+                      resolve(comments);
+                  } else {
+                      reject(error);
+                  }
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    };
+
+    // Compose articles avec commentaires
+    const composeArticles = async () => {
+        try {
+          let articles = await getArticles();
+            // Pour chaque article, recuperer les commentaires et les ajouter
+            for (let i = 0; i < articles.length; i++) {
+                const comments = await getComments(articles[i].articleId);
+                articles[i].comments = comments;
+            }
+            return articles;
+        } catch (err) {
+            return new Error(err);
         }
-  });
-};
+    };
+
+    composeArticles()
+        .then((result) => {
+            res.status(200).json(result);
+        })
+        .catch((error) => {
+            return next(new HttpError("Erreur de requête, les publications n'ont pas pu être récupérées", 500));
+        });
+
+}
 
 exports.createArticle = (req, res, next) => {
   console.log("creation of an article");

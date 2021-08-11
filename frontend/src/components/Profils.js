@@ -8,7 +8,6 @@ function Profils(){
 	const [nom, setNom] = useState(null);
     const [prenom, setPrenom] = useState(null);
     const [email, setEmail] = useState(null);
-    const [description, setDescription] = useState(null);
 	const auth = useContext(AuthContext);
 	// History context
     const history = useHistory();
@@ -25,9 +24,6 @@ function Profils(){
         setEmail(event.target.value)
 }
 
-	function handleDescription(event) {
-        setDescription(event.target.value)
-}
 
 	function handleReset(event){
 		 event.preventDefault();
@@ -79,10 +75,6 @@ function Profils(){
         			<label for="mail">e-mail:
         			<input type="email" id="mail" name="user_mail" onChange={handleEmail} />
         		</label>
-  				<label>
-    				Description :
-    				<textarea id="msg" name="user_message" onChange={handleDescription}></textarea>
-  				</label>
   				<div className='boutonsProfil'>
   					<input type="submit" value="Modifier informations" />
     				<input type="reset" value="Supprimer le compte" />
