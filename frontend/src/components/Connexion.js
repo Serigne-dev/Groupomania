@@ -2,17 +2,21 @@ import '../styles/Connexion.css'
 import {Link} from 'react-router-dom'
 import Header from './Header'
 import Forum from './forum/Forum'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/auth-context";
+
 
  function Connexion(){
+    // Authentication context
+    const auth = useContext(AuthContext);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     // History context
     const history = useHistory();
 
     
- function handleEmail(event) {
+function handleEmail(event) {
         setEmail(event.target.value)
 }
 function handlePassword(event) {
@@ -21,7 +25,6 @@ function handlePassword(event) {
 
 function handleSubmit(event) {
         event.preventDefault();
-        alert('connexion : ' + email + password);
         fetch("http://localhost:4200/auth/login", {
             method: 'POST',
             headers: {
@@ -30,10 +33,18 @@ function handleSubmit(event) {
           },
           body: JSON.stringify({email: email, password: password})
       })
-          .then(res => res.json())
+          .then(function(res){
+            if(res.ok){
+                return res.json();
+            }
+          })
           .then(function(data){
-                console.log(data)
+            if(data != null){
                 history.push("/forum");
+                console.log("userId:"+data.userId);
+                auth.login(data.userId, data.userName, data.userPrenom, data.token);
+                console.log(auth);
+            }  
           })
           .catch(err => console.log(err));
       }

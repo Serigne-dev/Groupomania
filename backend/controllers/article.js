@@ -6,7 +6,6 @@ exports.getAllArticles = (req, res, next) => {
   db.query ('SELECT * FROM Article ', (err, results) => {
     if (!err) {
         console.log ('Données reçues de Db:');
-          console.log (results);
             res.status(200).json(results);
         } else {
             return next(new HttpError("Erreur de requête, les article n'ont pas pu être récupérées", 500));
@@ -51,3 +50,4 @@ exports.createCommentaire = (req, res, next) => {
     }
   });
 };
+

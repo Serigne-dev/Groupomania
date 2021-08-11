@@ -55,7 +55,20 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
-          return res.status(201).json({ message: "Utilisateur trouvé !" });
+          res.status(200).json({ //reponse 200 avec userID et token
+            userId: results[0].id,
+            userName: results[0].Nom, 
+            userPrenom: results[0].Prenom,
+            token: jwt.sign( // sign de json web token pour encoder nouveau token
+              { 
+                userId: results[0].id ,
+                userName: results[0].Nom, 
+                userPrenom: results[0].Prenom
+              },// token contient l'id user en tant que payload
+              'RANDOM_TOKEN_SECRET', //chaine secrete de developpement temporaire pour encoder le token
+              { expiresIn: '24h' } // durée de validité du token
+            )
+          });
         })
         .catch(error => res.status(500).json({ error }));
         } else {
@@ -65,13 +78,30 @@ exports.login = (req, res, next) => {
 };
 
 exports.delete = (req, res, next) => {
-  const user = decodeId(req.headers.authorization);
-  console.log(user);
-  User.destroy({ where: { id: user.id } })
-    .then(() =>
-      res
-        .status(200)
-        .json({ message: "Utilisateur supprimé de la base de données" })
-    )
-    .catch((error) => res.status(500).json({ error }));
+  const deleteUserQuery = "delete FROM Employes where id = ?";
+  const inserts = [req.body.userId];
+  const sql = mysql.format(deleteUserQuery, inserts);
+  db.query(sql, (err, results) => {
+        if (!err) {
+          console.log("suppression de l'employe");
+          res.status(201).json({ message: "Utilisateur supprimé !" });
+        } else {
+          res.status(400).json({ err });
+        }
+  });
+};
+
+exports.modify = (req, res, next) => {
+  const modifyUserQuery = "UPDATE Employes SET nom=?, prenom=?, email=? WHERE id=?";
+  const inserts = [req.body.userName, req.body.userPrenom, req.body.userEmail, req.body.userId];
+  const sql = mysql.format(modifyUserQuery, inserts);
+  console.log("modif user : "+sql);
+  db.query(sql, (err, results) => {
+        if (!err) {
+          console.log("modification de l'employe");
+          res.status(201).json({ message: "Utilisateur modifié !" });
+        } else {
+          res.status(400).json({ err });
+        }
+  });
 };
