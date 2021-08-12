@@ -80,7 +80,7 @@ exports.createArticle = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   const createPostQuery = "INSERT INTO Article (Employe_id, Title, Texte, Photo_url, Heure) VALUES (?, ?, ?, ?, ?)";
-  const inserts = [1, title, commentaires, imageUrl, new Date()];
+  const inserts = [req.body.userId, title, commentaires, imageUrl, new Date()];
   const sql = mysql.format(createPostQuery, inserts);
   console.log(sql);
   db.query (sql, (err, results) => {
@@ -98,7 +98,7 @@ exports.createCommentaire = (req, res, next) => {
   const commentaires = req.body.comment;
   const idArticle = req.body.article;
   const createPostQuery = "INSERT INTO commentaires (Employe_id, Texte, id_article) VALUES (?, ?, ?)";
-  const inserts = [1, commentaires, idArticle];
+  const inserts = [req.body.userId, commentaires, idArticle];
   console.log("insert : "+inserts);
   const sql = mysql.format(createPostQuery, inserts);
   console.log("sql : "+sql);

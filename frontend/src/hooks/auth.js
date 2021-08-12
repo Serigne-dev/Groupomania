@@ -8,14 +8,16 @@ export const useAuth = () => {
     const [userId, setUserId] = useState(false);
     const [userName, setUserName] = useState(false);
     const [userPrenom, setUserPrenom] = useState(false);
+    const [userEmail, setUserEmail] = useState(false);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
     // Login usCallback pour ne pas rentrer dans un cycle infinit
-    const login = useCallback((userId, userName, userPrenom, token, expirationDate) => {
+    const login = useCallback((userId, userName, userPrenom, userEmail, token, expirationDate) => {
         setUserId(userId);
         setToken(token);
         setUserName(userName);
         setUserPrenom(userPrenom);
+        setUserEmail(userEmail);
 
 
         // Creér une date 24h dans le futur (validité de la session)
@@ -29,6 +31,7 @@ export const useAuth = () => {
                 userId: userId,
                 userName: userName,
                 userPrenom: userPrenom,
+                userEmail: userEmail,
                 token: token,
                 expiration: tokenExpirationDate.toISOString(),
             })
@@ -41,6 +44,7 @@ export const useAuth = () => {
         setUserId(null);
         setUserName(null);
         setUserPrenom(null);
+        setUserEmail(null);
         setTokenExpirationDate(null);
         localStorage.removeItem("userData");
     }, []);
@@ -64,12 +68,13 @@ export const useAuth = () => {
             storedData.userId &&
             storedData.userName &&
             storedData.userPrenom &&
+            storedData.userEmail &&
             storedData.token &&
             new Date(storedData.expiration) > new Date()
         ) {
-            login(storedData.userId, storedData.userName, storedData.userPrenom, storedData.token, new Date(storedData.expiration));
+            login(storedData.userId, storedData.userName, storedData.userPrenom, storedData.userEmail, storedData.token, new Date(storedData.expiration));
         }
     }, [login]);
 
-    return { userId, userName, userPrenom, token, login, logout };
+    return { userId, userName, userPrenom, userEmail, token, login, logout };
 };

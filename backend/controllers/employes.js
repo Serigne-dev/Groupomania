@@ -59,11 +59,16 @@ exports.login = (req, res, next) => {
             userId: results[0].id,
             userName: results[0].Nom, 
             userPrenom: results[0].Prenom,
+            userEmail: results[0].Email,
+            userImg: results[0].Photo_url,
             token: jwt.sign( // sign de json web token pour encoder nouveau token
               { 
                 userId: results[0].id ,
                 userName: results[0].Nom, 
-                userPrenom: results[0].Prenom
+                userPrenom: results[0].Prenom,
+                userEmail: results[0].Email,
+                userImg: results[0].Photo_url,
+
               },// token contient l'id user en tant que payload
               'RANDOM_TOKEN_SECRET', //chaine secrete de developpement temporaire pour encoder le token
               { expiresIn: '24h' } // durée de validité du token

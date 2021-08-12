@@ -69,42 +69,26 @@ function handleChangeImg(event) {
       .then(function(data){
         		alert('Modifications prises en compte !');
             auth.userName = nom;
+            auth.userPrenom = prenom;
+            auth.userEmail = email;
+            auth.userImg = img;
             history.push("/forum");
           })
       .catch((err) => console.log(err));
-
-/*
-        fetch("http://localhost:4200/auth/modify", {
-            method: 'PUT',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({userId:auth.userId, userName: nom, userPrenom: prenom, userEmail:email})
-      })
-          .then(res => res.json())
-          .then(function(data){
-        		alert('Modifications prises en compte !');
-                history.push("/forum");
-          })
-          .catch(err => console.log(err));*/
 	}
-
-
-	
 	return <div>
 			<h1> Profil </h1>
 			<form className='profils' onSubmit={handleSubmit} onReset={handleReset}>
   				<label>
     				Nom :
-    				<input type="text" name="Nom" onChange={handleNom} />
+    				<input type="text" name="Nom" placeholder={auth.userName} onChange={handleNom} />
   				</label>
   				<label>
     				Prenom :
-    				<input type="text" name="Prenom" onChange={handlePrenom} />
+    				<input type="text" name="Prenom" placeholder={auth.userPrenom} onChange={handlePrenom} />
   				</label>
         			<label for="mail">e-mail:
-        			<input type="email" id="mail" name="user_mail" onChange={handleEmail} />
+        			<input type="email" id="mail" name="user_mail" placeholder={auth.userEmail} onChange={handleEmail} />
         		</label>
         		<div className='ajoutPhotoProfil'> 
   				<p> ajouter une photo </p>

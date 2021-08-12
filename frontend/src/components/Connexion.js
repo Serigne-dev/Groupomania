@@ -8,12 +8,12 @@ import { AuthContext } from "../context/auth-context";
 
 
  function Connexion(){
-    // Authentication context
-    const auth = useContext(AuthContext);
+    
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     // History context
     const history = useHistory();
+    const auth = useContext(AuthContext);
 
     
 function handleEmail(event) {
@@ -41,9 +41,9 @@ function handleSubmit(event) {
           .then(function(data){
             if(data != null){
                 history.push("/forum");
-                console.log("userId:"+data.userId);
-                auth.login(data.userId, data.userName, data.userPrenom, data.token);
-                console.log(auth);
+                console.log("userId:"+data.userEmail);
+                auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.token);
+                console.log("AUTH:"+data.userEmail+auth.userEmail);
             }  
           })
           .catch(err => console.log(err));

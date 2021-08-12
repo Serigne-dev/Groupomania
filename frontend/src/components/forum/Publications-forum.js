@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -18,6 +18,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
+
+import { AuthContext } from "../../context/auth-context";
 import '../../styles/PublicationForum.css'
 
 
@@ -49,6 +51,9 @@ export default function PublicationsForum() {
   const [expanded, setExpanded] = React.useState(false);
   const[articles, setArticles] = useState([]);
   const[comment, setComment] = useState(null);
+  // Authentication context
+    const auth = useContext(AuthContext);
+
 
   function handleChangeComment(event) {
         setComment(event.target.value);
@@ -72,12 +77,13 @@ export default function PublicationsForum() {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({comment: comment, article: articleId})
+          body: JSON.stringify({comment: comment, article: articleId, userId: auth.userId})
       })
           .then(res => res.json())
           .then(function(data){
             console.log(data);
             event.target.reset();
+            {document.location.reload()};
           })
           .catch(err => console.log(err));
   }
@@ -97,8 +103,8 @@ export default function PublicationsForum() {
   <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {article.Employe_id}
+          <Avatar alt="" src={article.Photo_url} className={classes.large}>
+            
           </Avatar>
         }
         

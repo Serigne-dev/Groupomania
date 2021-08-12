@@ -2,8 +2,9 @@ import '../styles/CreationCompte.css'
 import Header from './Header'
 import Forum from './forum/Forum'
 import {Link} from 'react-router-dom'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/auth-context";
 
 
 function CreationCompte(){
@@ -13,6 +14,7 @@ function CreationCompte(){
     const [password, setPassword] = useState(null);
     // History context
     const history = useHistory();
+    const auth = useContext(AuthContext);
 
 
 function handleNom(event) {
@@ -42,7 +44,9 @@ function handleSubmit(event) {
           .then(res => res.json())
           .then(function(data){
                 console.log(data)
-                history.push("/forum");
+                history.push("/");
+                //auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.userImg, data.token);
+
           })
           .catch(err => console.log(err));
       }

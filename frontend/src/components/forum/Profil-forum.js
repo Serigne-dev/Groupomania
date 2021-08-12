@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ImageIcon from '@material-ui/icons/Image';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
+import { AuthContext } from "../../context/auth-context";
 import axios from "axios";
 
 
@@ -30,6 +31,9 @@ function ProfilForum() {
   const [comment, setComment] = useState("");
   const [img, setImg] = useState("");
 
+  // Authentication context
+    const auth = useContext(AuthContext);
+
   function handleChangeTitle(event) {
     setTitle(event.target.value);
   }
@@ -45,6 +49,7 @@ function ProfilForum() {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
+    formData.append("userId", auth.userId);
     formData.append("title", title);
     formData.append("commentaire", comment);
     formData.append("image", img);
