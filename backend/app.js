@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const helmet = require("helmet");
 const employesRoutes = require("./routes/employes"); // importe le routeur user
 const articleRoutes = require("./routes/article");
+const path = require('path');
 
 
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.use("/auth", employesRoutes);// enregistrement de la route user
 app.use("/forum", articleRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 
 

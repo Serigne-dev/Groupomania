@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ImageIcon from '@material-ui/icons/Image';
-import ImageUpload from "./ImageUpload";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from "axios";
 
 
 function ProfilForum() {
@@ -28,6 +28,7 @@ function ProfilForum() {
   //Posts State
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
+  const [img, setImg] = useState("");
 
   function handleChangeTitle(event) {
     setTitle(event.target.value);
@@ -37,20 +38,25 @@ function ProfilForum() {
     setComment(event.target.value);
   }
 
+    function handleChangeImg(event) {
+    setImg(event.target.files[0]);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
-    alert("Le nom a été soumis : " + title);
-    fetch("http://localhost:4200/forum", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title: title, commentaire: comment }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("commentaire", comment);
+    formData.append("image", img);
+
+
+    axios
+      .post("http://localhost:4200/forum", formData)
+      .then((res) => console.log(res), alert("Message crée"))
+      .then(() => {document.location.reload()})
       .catch((err) => console.log(err));
+
+
   }
 
   const classes = useStyles();
@@ -91,12 +97,8 @@ function ProfilForum() {
             value={comment}
           />
 
-          <label for="upload-button">
-            <ImageUpload
-              cardName="Input Image"
-              imageGallery={galleryImageList}
-            />
-          </label>
+
+          <input type="file" onChange={handleChangeImg}/>
 
           <Button type="submit" variant="contained" color="primary">
             Envoyer

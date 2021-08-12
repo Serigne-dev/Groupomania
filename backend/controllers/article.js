@@ -76,14 +76,13 @@ exports.getAllArticles = (req, res, next) => {
 }
 
 exports.createArticle = (req, res, next) => {
-  console.log("creation of an article");
   const commentaires = req.body.commentaire;
   const title = req.body.title;
+  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   const createPostQuery = "INSERT INTO Article (Employe_id, Title, Texte, Photo_url, Heure) VALUES (?, ?, ?, ?, ?)";
-  const inserts = [1, title, commentaires, "", new Date()];
-  console.log("insert : "+inserts);
+  const inserts = [1, title, commentaires, imageUrl, new Date()];
   const sql = mysql.format(createPostQuery, inserts);
-  console.log("sql : "+sql);
+  console.log(sql);
   db.query (sql, (err, results) => {
     if (!err) {
         console.log ('Sauvegarde du post');

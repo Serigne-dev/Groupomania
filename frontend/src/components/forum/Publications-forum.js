@@ -75,7 +75,10 @@ export default function PublicationsForum() {
           body: JSON.stringify({comment: comment, article: articleId})
       })
           .then(res => res.json())
-          .then(data => console.log(data))
+          .then(function(data){
+            console.log(data);
+            event.target.reset();
+          })
           .catch(err => console.log(err));
   }
 
@@ -98,19 +101,14 @@ export default function PublicationsForum() {
             {article.Employe_id}
           </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={article.Title}
-        subheader={article.Title}
+        
+        title={article.Nom +" "+ article.Prenom}
+        subheader={article.Heure}
+
       />
-      <CardMedia
-        className={classes.media}
-        image=""
-        title=""
-      />
+
+      <img src={article.Photo_url}/>
+
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {article.Texte}
@@ -120,6 +118,7 @@ export default function PublicationsForum() {
       <form onSubmit={handleSubmit(article.articleId)}>
        <TextField
                           id="outlined-full-width"
+                          type="reset"
                           label="Commentaire"
                           style={{ margin: 8 }}
                           placeholder="Ecrivez votre commentaire"
@@ -139,6 +138,7 @@ export default function PublicationsForum() {
        </form>
 
       <CardActions disableSpacing>
+      <p> Voir les commentaires </p>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,

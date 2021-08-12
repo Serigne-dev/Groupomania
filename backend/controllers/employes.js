@@ -92,8 +92,9 @@ exports.delete = (req, res, next) => {
 };
 
 exports.modify = (req, res, next) => {
-  const modifyUserQuery = "UPDATE Employes SET nom=?, prenom=?, email=? WHERE id=?";
-  const inserts = [req.body.userName, req.body.userPrenom, req.body.userEmail, req.body.userId];
+  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  const modifyUserQuery = "UPDATE Employes SET nom=?, prenom=?, email=?,Photo_url=? WHERE id=?";
+  const inserts = [req.body.userName, req.body.userPrenom, req.body.userEmail, imageUrl, req.body.userId];
   const sql = mysql.format(modifyUserQuery, inserts);
   console.log("modif user : "+sql);
   db.query(sql, (err, results) => {
