@@ -99,7 +99,7 @@ export default function PublicationsForum() {
             <ul>
                 {articles.map(article => (
 
-          <li key={article.id}>
+          <li key={article.id}> <br />
   <Card className={classes.root}>
       <CardHeader
         avatar={

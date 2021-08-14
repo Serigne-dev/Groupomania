@@ -48,7 +48,7 @@ exports.login = (req, res, next) => {
     const sql = mysql.format(selectEmailQuery, inserts);
     console.log("SQL : "+sql);
     db.query(sql, (err, results) => {
-        if (!err) {
+        if (!err && results.length != 0) {
           console.log("employe trouve:"+ results[0].Password);
           bcrypt.compare(req.body.password, results[0].Password) // compare le mdp entré par l'utilisateur avec le hash de la bdd
         .then(valid => {
@@ -82,20 +82,6 @@ exports.login = (req, res, next) => {
       });
 };
 
-exports.delete = (req, res, next) => {
-  const deleteUserQuery = "delete FROM Employes where id = ?";
-  const inserts = [req.body.userId];
-  const sql = mysql.format(deleteUserQuery, inserts);
-  db.query(sql, (err, results) => {
-        if (!err) {
-          console.log("suppression de l'employe");
-          res.status(201).json({ message: "Utilisateur supprimé !" });
-        } else {
-          res.status(400).json({ err });
-        }
-  });
-};
-
 exports.modify = (req, res, next) => {
   const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   const modifyUserQuery = "UPDATE Employes SET nom=?, prenom=?, email=?,Photo_url=? WHERE id=?";
@@ -106,6 +92,20 @@ exports.modify = (req, res, next) => {
         if (!err) {
           console.log("modification de l'employe");
           res.status(201).json({ message: "Utilisateur modifié !" });
+        } else {
+          res.status(400).json({ err });
+        }
+  });
+};
+
+exports.delete = (req, res, next) => {
+  const deleteUserQuery = "delete FROM Employes where id = ?";
+  const inserts = [req.body.userId];
+  const sql = mysql.format(deleteUserQuery, inserts);
+  db.query(sql, (err, results) => {
+        if (!err) {
+          console.log("suppression de l'employe");
+          res.status(201).json({ message: "Utilisateur supprimé !" });
         } else {
           res.status(400).json({ err });
         }

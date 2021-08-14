@@ -50,28 +50,31 @@ function handleSubmit(event) {
           })
           .catch(err => console.log(err));
       }
-	return <div> 
+	return <div className="bodyCreationCompte"> 
         <Header />
-		<h1>Nouveau Commpte : </h1>
+        <div className="creationCompte">
+		<h1>Nouveau Compte : </h1>
         <form onSubmit={handleSubmit} className='groupomania-connexion'>
             <label>
                     Nom :
                     <input type="text" name="nom" onChange={handleNom} />
-                </label>
+                </label> <br />
                 <label>
                     Prenom :
                     <input type="text" name="prenom" onChange={handlePrenom} />
-                </label>       
+                </label> <br />      
             <div className='form-email'>
                 <label for='email'>E-mail: </label>
                 <input type='email' name='email' id='email' required onChange={handleEmail}/>
-            </div>
+            </div> <br />
           	<div>
     			<label for="pass">Mot de passe (8 caractères minimum):</label>
     			<input type="password" id="pass" name="password" minlength="8" required onChange={handlePassword}/>           		
-			</div>
+			</div> <br />
 			<input type="submit" value="Valider" />     
         </form>
+        </div>
+        <footer className='footerCreerCompte'> Groupomania </footer>
         </div>
 }
 

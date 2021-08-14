@@ -49,8 +49,9 @@ function handleSubmit(event) {
           .catch(err => console.log(err));
       }
 
-	return <div> 
-        <Header />
+	return <div className='bodyConnexion'> 
+        <Header/>
+        <div className='seConnecter'>
 		<h1>Se Connecter : </h1>
         <form onSubmit={handleSubmit} className='groupomania-connexion'>       
             <div className='form-email'>
@@ -65,6 +66,8 @@ function handleSubmit(event) {
         </form>
         		<Link className="btn" to={'/creationCompte'}>Créer un compte</Link>
         </div>
+        <footer className='footerConnexion'> Groupomania </footer>
+     </div>
     
       	
 }
