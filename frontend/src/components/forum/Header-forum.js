@@ -24,7 +24,6 @@ function HeaderForum(){
 				<nav>
 					<ul>
 						<li><Link to={'/profils'}> Modifier profil</Link></li>
-						<li><Link to={'/equipe'}> Notre Equipe</Link></li>
 						<li><Button onClick={logoutHandler} variant="contained" color="primary">Se deconnecter</Button></li>
 					</ul>
 				</nav>

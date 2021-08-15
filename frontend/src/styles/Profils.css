@@ -1,4 +1,6 @@
 .profils{
 	display: flex;
 	flex-direction: column;
+	height: 650px;
+	padding-left: 20px;
 }
