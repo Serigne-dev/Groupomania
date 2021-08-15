@@ -42,8 +42,7 @@ function handleSubmit(event) {
             if(data != null){
                 history.push("/forum");
                 console.log("userId:"+data.userEmail);
-                auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.token);
-                console.log("AUTH:"+data.userEmail+auth.userEmail);
+                auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.userImg, data.token);
             }  
           })
           .catch(err => console.log(err));

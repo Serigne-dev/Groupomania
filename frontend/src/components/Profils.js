@@ -3,6 +3,7 @@ import { AuthContext } from "../context/auth-context";
 import React, { useContext, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 import axios from "axios";
 
 function Profils(){
@@ -54,9 +55,12 @@ function handleChangeImg(event) {
 
 	function handleSubmit(event){
 		event.preventDefault();
-    alert(img);
 		const formData = new FormData();
 	    formData.append("userId", auth.userId);
+        const nomF = nom!=null ? nom : auth.userName;
+        const prenomF = prenom!=null ? prenom : auth.userPrenom;
+        const emailF = email!=null ? email : auth.userEmail;
+        const imageF = img!=null ? img : auth.userImg;
 	    formData.append("userName", nom);
 	    formData.append("userPrenom", prenom);
 	    formData.append("userEmail", email);
@@ -65,13 +69,14 @@ function handleChangeImg(event) {
 
     	axios
       .put("http://localhost:4200/auth/modify", formData)
-      .then((res) => console.log(res))
-      .then(function(data){
+      .then(function(res){
         		alert('Modifications prises en compte !');
-            auth.userName = nom;
-            auth.userPrenom = prenom;
-            auth.userEmail = email;
-            auth.userImg = img;
+            auth.userName = nomF;
+            auth.userPrenom = prenomF;
+            auth.userEmail = emailF;
+            if(res != null){
+                auth.userImg = res.data.userImg;
+            }
             history.push("/forum");
           })
       .catch((err) => console.log(err));
@@ -90,6 +95,8 @@ function handleChangeImg(event) {
         			<label for="mail">e-mail:
         			<input type="email" id="mail" name="user_mail" placeholder={auth.userEmail} onChange={handleEmail} />
         		</label>
+                <Avatar alt="" src={auth.userImg} >
+                </Avatar>
         		<div className='ajoutPhotoProfil'> 
   				<p> ajouter une photo </p>
   				<input type="file" onChange={handleChangeImg}/>

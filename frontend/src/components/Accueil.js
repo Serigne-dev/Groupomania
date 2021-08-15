@@ -10,7 +10,7 @@ import { AuthContext } from "../context/auth-context";
 
 const Accueil = () => {
 
-  const { userId, userName, userPrenom, userEmail, token, login, logout } = useAuth();
+  const { userId, userName, userPrenom, userEmail, userImg, token, login, logout } = useAuth();
  
 
     return (<AuthContext.Provider
@@ -21,6 +21,7 @@ const Accueil = () => {
                 userName: userName,
                 userPrenom: userPrenom,
                 userEmail: userEmail,
+                userImg: userImg,
                 login: login,
                 logout: logout,
             }}

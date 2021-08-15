@@ -13,7 +13,7 @@ exports.getAllArticles = (req, res, next) => {
         const getArticles = () => {
           return new Promise((resolve, reject) => {
               try {
-                  const string = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id";
+                  const string = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Employes.Photo_url as userImg, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id";
                   // Requête
                   db.query (string, (err, articles) => {
                     if (!err) {

@@ -103,7 +103,7 @@ export default function PublicationsForum() {
   <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar alt="" src={article.Photo_url} className={classes.large}>
+          <Avatar alt="" src={article.userImg} className={classes.large}>
             
           </Avatar>
         }

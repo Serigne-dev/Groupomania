@@ -83,7 +83,10 @@ exports.login = (req, res, next) => {
 };
 
 exports.modify = (req, res, next) => {
-  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  let imageUrl = null;
+  if(req.file){
+    imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  }
   const modifyUserQuery = "UPDATE Employes SET nom=?, prenom=?, email=?,Photo_url=? WHERE id=?";
   const inserts = [req.body.userName, req.body.userPrenom, req.body.userEmail, imageUrl, req.body.userId];
   const sql = mysql.format(modifyUserQuery, inserts);
@@ -91,7 +94,10 @@ exports.modify = (req, res, next) => {
   db.query(sql, (err, results) => {
         if (!err) {
           console.log("modification de l'employe");
-          res.status(201).json({ message: "Utilisateur modifié !" });
+          res.status(200).json({ //reponse 200 avec userID et token
+            userImg: imageUrl,
+            message: "Utilisateur modifié !"
+          });
         } else {
           res.status(400).json({ err });
         }
