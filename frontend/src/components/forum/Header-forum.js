@@ -8,6 +8,8 @@ import '../../styles/headerForum.css'
 
 function HeaderForum(){
 
+	const userData = JSON.parse(localStorage.getItem('userData'));
+
 	const auth = useContext(AuthContext);
     // History context
     const history = useHistory();
@@ -28,7 +30,7 @@ function HeaderForum(){
 					</ul>
 				</nav>
 				<div>
-				{auth.userName}, {auth.userPrenom}
+				{userData.userName}, {userData.userPrenom}
 				</div>
 			</header>
 			<div className='publications'> </div>

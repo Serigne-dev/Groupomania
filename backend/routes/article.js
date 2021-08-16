@@ -8,5 +8,7 @@ const articleCtrl = require('../controllers/article'); // enregistre le controll
 router.get('/', articleCtrl.getAllArticles);
 router.post('/',multer, articleCtrl.createArticle);
 router.post('/comment',articleCtrl.createCommentaire);
+router.delete('/', multer, articleCtrl.deleteArticle)
+router.delete('/comment', multer, articleCtrl.deleteComment)
 
 module.exports = router;

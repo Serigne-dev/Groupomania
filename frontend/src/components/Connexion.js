@@ -40,9 +40,8 @@ function handleSubmit(event) {
           })
           .then(function(data){
             if(data != null){
-                history.push("/forum");
-                console.log("userId:"+data.userEmail);
                 auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.userImg, data.token);
+                history.push("/forum");
             }  
           })
           .catch(err => console.log(err));

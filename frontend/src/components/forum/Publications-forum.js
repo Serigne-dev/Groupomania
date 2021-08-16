@@ -18,7 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
-
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { AuthContext } from "../../context/auth-context";
 import '../../styles/PublicationForum.css'
 
@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PublicationsForum() {
+  const userData = JSON.parse(localStorage.getItem('userData'));
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const[articles, setArticles] = useState([]);
@@ -57,6 +58,42 @@ export default function PublicationsForum() {
 
   function handleChangeComment(event) {
         setComment(event.target.value);
+  }
+
+  const handleDelete = articleId => event => {
+    event.preventDefault();
+        fetch("http://localhost:4200/forum/", {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({articleId: articleId})
+      })
+          .then(res => res.json())
+          .then(function(data){
+            console.log(data);
+            {document.location.reload()};
+          })
+          .catch(err => console.log(err));
+  }
+
+  const handleDeleteComment = commentId => event => {
+    event.preventDefault();
+    fetch("http://localhost:4200/forum/comment", {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({commentId: commentId})
+      })
+          .then(res => res.json())
+          .then(function(data){
+            console.log(data);
+            {document.location.reload()};
+          })
+          .catch(err => console.log(err));
   }
 
 	useEffect(() => {
@@ -77,7 +114,7 @@ export default function PublicationsForum() {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({comment: comment, article: articleId, userId: auth.userId})
+          body: JSON.stringify({comment: comment, article: articleId, userId: userData.userId})
       })
           .then(res => res.json())
           .then(function(data){
@@ -94,12 +131,34 @@ export default function PublicationsForum() {
   </IconButton>
   )
 
+  function DeleteButtonArticle(props) {
+    const articleId = props.id;
+    const userId = props.userId;
+    if(userId == 1){
+      return <IconButton aria-label="settings">
+            <DeleteForeverIcon onClick={handleDelete(articleId)} />
+          </IconButton>
+    }
+    return (null);
+  }
+
+  function DeleteButtonComment(props) {
+    const commentId = props.id;
+    const userId = props.userId;
+    if(userId == 1){
+      return <IconButton aria-label="settings">
+            <DeleteForeverIcon onClick={handleDeleteComment(commentId)} />
+          </IconButton>
+    }
+    return (null);
+  }
+
   return <div>
             <h1> Publications </h1>
             <ul>
                 {articles.map(article => (
 
-          <li key={article.id}> <br />
+          <li key={article.articleId}> <br />
   <Card className={classes.root}>
       <CardHeader
         avatar={
@@ -107,15 +166,22 @@ export default function PublicationsForum() {
             
           </Avatar>
         }
+
+        action={
+          <DeleteButtonArticle id={article.articleId} userId={auth.userId}/>
+        }
         
         title={article.Nom +" "+ article.Prenom}
         subheader={article.Heure}
-
       />
 
       <img src={article.Photo_url}/>
 
       <CardContent>
+      <Typography variant="h5" color="textPrimary" component="p">
+          {article.Title}
+        </Typography>
+        <br/>
         <Typography variant="body2" color="textSecondary" component="p">
           {article.Texte}
         </Typography>
@@ -167,7 +233,7 @@ export default function PublicationsForum() {
               <Typography className={classes.texte} color="textSecondary" gutterBottom>
                 {comment.Texte} 
               </Typography>
-
+              <DeleteButtonComment id={comment.Id} userId={userData.userId}/>
               </li>
 
               ))}

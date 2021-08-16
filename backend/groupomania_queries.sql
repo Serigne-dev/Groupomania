@@ -35,11 +35,8 @@ CREATE TABLE Commentaires (
  Texte TEXT,
  id_article SMALLINT UNSIGNED NOT NULL,
  PRIMARY KEY (id),
- CONSTRAINT fk_commentaire_employe_id
-    FOREIGN KEY (Employe_id) REFERENCES Employes(id) ON DELETE CASCADE,
-    CONSTRAINT fk_Article_id
-    FOREIGN KEY (id_article)
-    REFERENCES Article(id)
+ CONSTRAINT fk_commentaire_employe_id FOREIGN KEY (Employe_id) REFERENCES Employes(id) ON DELETE CASCADE,
+ CONSTRAINT fk_Article_id FOREIGN KEY (id_article) REFERENCES Article(id) ON DELETE CASCADE
 )
 ENGINE=INNODB;
 

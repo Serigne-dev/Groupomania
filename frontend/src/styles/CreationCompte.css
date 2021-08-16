@@ -18,3 +18,12 @@
 .footerCreerCompte{
 	margin-top: 130px;
 }
+
+@media only screen and (max-width: 480px){
+	.creationCompte{
+		width: auto;
+	}
+	.groupomania-logo{
+		width: 50%;
+	}
+}

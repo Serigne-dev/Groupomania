@@ -78,7 +78,10 @@ exports.getAllArticles = (req, res, next) => {
 exports.createArticle = (req, res, next) => {
   const commentaires = req.body.commentaire;
   const title = req.body.title;
-  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  const imageUrl = null;
+  if(req.file){
+      imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  }
   const createPostQuery = "INSERT INTO Article (Employe_id, Title, Texte, Photo_url, Heure) VALUES (?, ?, ?, ?, ?)";
   const inserts = [req.body.userId, title, commentaires, imageUrl, new Date()];
   const sql = mysql.format(createPostQuery, inserts);
@@ -112,3 +115,30 @@ exports.createCommentaire = (req, res, next) => {
   });
 };
 
+exports.deleteArticle = (req, res, next) => {
+  const deletePostQuery = "DELETE FROM Article WHERE id = ?";
+  const insert = [req.body.articleId];
+  const sql = mysql.format(deletePostQuery, insert);
+  console.log("sql : "+sql);
+  db.query (sql, (err, results) => {
+    if (!err) {
+        res.status(201).json({ message: "Article supprimé" });
+    } else {
+        res.status(404).json({ err });
+    }
+  });
+}
+
+exports.deleteComment = (req, res, next) => {
+  const deleteCommentQuery = "DELETE FROM Commentaires WHERE id = ?";
+  const insert = [req.body.commentId];
+  const sql = mysql.format(deleteCommentQuery, insert);
+  console.log("sql : "+sql);
+  db.query (sql, (err, results) => {
+    if (!err) {
+        res.status(201).json({ message: "Commentaire supprimé" });
+    } else {
+        res.status(404).json({ err });
+    }
+  });
+}

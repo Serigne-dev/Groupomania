@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const db = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
-    host: 'localhost',
+    host: process.env.SQL_HOST,
     user: 'root',
     password: 'Serigne1*',
     database: 'Groupomania',

@@ -8,6 +8,7 @@ import axios from "axios";
 
 function Profils(){
 
+    const userData = JSON.parse(localStorage.getItem('userData'));
 	const [nom, setNom] = useState(null);
     const [prenom, setPrenom] = useState(null);
     const [email, setEmail] = useState(null);
@@ -42,7 +43,7 @@ function handleChangeImg(event) {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({userId: auth.userId})
+          body: JSON.stringify({userId: userData.userId})
       })
           .then(res => res.json())
           .then(function(data){
@@ -56,15 +57,15 @@ function handleChangeImg(event) {
 	function handleSubmit(event){
 		event.preventDefault();
 		const formData = new FormData();
-	    formData.append("userId", auth.userId);
-        const nomF = nom!=null ? nom : auth.userName;
-        const prenomF = prenom!=null ? prenom : auth.userPrenom;
-        const emailF = email!=null ? email : auth.userEmail;
-        const imageF = img!=null ? img : auth.userImg;
-	    formData.append("userName", nom);
-	    formData.append("userPrenom", prenom);
-	    formData.append("userEmail", email);
-	    formData.append("image", img);
+	    formData.append("userId", userData.userId);
+        const nomF = nom!=null ? nom : userData.userName;
+        const prenomF = prenom!=null ? prenom : userData.userPrenom;
+        const emailF = email!=null ? email : userData.userEmail;
+        const imageF = img!=null ? img : userData.userImg;
+	    formData.append("userName", nomF);
+	    formData.append("userPrenom", prenomF);
+	    formData.append("userEmail", emailF);
+	    formData.append("image", imageF);
 
 
     	axios
@@ -77,6 +78,16 @@ function handleChangeImg(event) {
             if(res != null){
                 auth.userImg = res.data.userImg;
             }
+            localStorage.setItem(
+            "userData",
+            JSON.stringify({
+                userId: userData.userId,
+                userName: auth.userName,
+                userPrenom: auth.userPrenom,
+                userEmail: auth.userEmail,
+                userImg: auth.userImg,
+                token: userData.token
+            }));
             history.push("/forum");
           })
       .catch((err) => console.log(err));
@@ -86,19 +97,18 @@ function handleChangeImg(event) {
 			<form className='profils' onSubmit={handleSubmit} onReset={handleReset}>
   				<label>
     				Nom :
-    				<input type="text" name="Nom" placeholder={auth.userName} onChange={handleNom} />
+    				<input type="text" name="Nom" placeholder={userData.userName} onChange={handleNom} />
   				</label>
   				<label>
     				Prenom :
-    				<input type="text" name="Prenom" placeholder={auth.userPrenom} onChange={handlePrenom} />
+    				<input type="text" name="Prenom" placeholder={userData.userPrenom} onChange={handlePrenom} />
   				</label>
         			<label for="mail">e-mail:
-        			<input type="email" id="mail" name="user_mail" placeholder={auth.userEmail} onChange={handleEmail} />
+        			<input type="email" id="mail" name="user_mail" placeholder={userData.userEmail} onChange={handleEmail} />
         		</label>
-                <Avatar alt="" src={auth.userImg} >
+                <Avatar alt="" src={userData.userImg} >
                 </Avatar>
         		<div className='ajoutPhotoProfil'> 
-  				<p> ajouter une photo </p>
   				<input type="file" onChange={handleChangeImg}/>
   				</div> <br />
   				<div className='boutonsProfil'>
