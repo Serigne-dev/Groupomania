@@ -13,7 +13,7 @@ exports.getAllArticles = (req, res, next) => {
         const getArticles = () => {
           return new Promise((resolve, reject) => {
               try {
-                  const string = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Employes.Photo_url as userImg, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id";
+                  const string = "SELECT  Article.id AS articleId,  Employes.Nom, Employes.Prenom, Employes.Photo_url as userImg, Article.Title, Article.Texte, Article.Photo_url, Article.Heure FROM Article JOIN Employes ON Article.Employe_id=Employes.id ORDER BY Article.Heure DESC";
                   // Requête
                   db.query (string, (err, articles) => {
                     if (!err) {
@@ -78,7 +78,7 @@ exports.getAllArticles = (req, res, next) => {
 exports.createArticle = (req, res, next) => {
   const commentaires = req.body.commentaire;
   const title = req.body.title;
-  const imageUrl = null;
+  let imageUrl = null;
   if(req.file){
       imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   }
