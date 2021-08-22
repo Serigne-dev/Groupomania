@@ -30,7 +30,7 @@ function HeaderForum(){
 					</ul>
 				</nav>
 				<div>
-				{userData.userName}, {userData.userPrenom}
+				{userData.userName}, {userData.userPrenom}, 
 				</div>
 			</header>
 			<div className='publications'> </div>

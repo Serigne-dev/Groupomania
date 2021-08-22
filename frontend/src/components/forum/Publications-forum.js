@@ -132,6 +132,7 @@ export default function PublicationsForum() {
   )
 
   function DeleteButtonArticle(props) {
+    console.log("delete button : "+props.userId);
     const articleId = props.id;
     const userId = props.userId;
     if(userId == 1){
@@ -168,7 +169,7 @@ export default function PublicationsForum() {
         }
 
         action={
-          <DeleteButtonArticle id={article.articleId} userId={auth.userId}/>
+          <DeleteButtonArticle id={article.articleId} userId={userData.userId}/>
         }
         
         title={article.Nom +" "+ article.Prenom}

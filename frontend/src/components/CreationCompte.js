@@ -32,7 +32,6 @@ function handlePassword(event) {
 
 function handleSubmit(event) {
         event.preventDefault();
-        alert('Le nom a été soumis : ' + nom + prenom + email + password);
         fetch("http://localhost:4200/auth/signup", {
             method: 'POST',
             headers: {
