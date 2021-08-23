@@ -1,8 +1,8 @@
 .groupomania-header{
 	text-align: center;
-	border-bottom: solid 2px black;
+	border-bottom: solid 2px red;
 }
 
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 768px){
 	width: auto;
 }

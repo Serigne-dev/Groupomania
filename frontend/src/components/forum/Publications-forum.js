@@ -132,7 +132,6 @@ export default function PublicationsForum() {
   )
 
   function DeleteButtonArticle(props) {
-    console.log("delete button : "+props.userId);
     const articleId = props.id;
     const userId = props.userId;
     if(userId == 1){
@@ -179,7 +178,7 @@ export default function PublicationsForum() {
       <img src={article.Photo_url}/>
 
       <CardContent>
-      <Typography variant="h5" color="textPrimary" component="p">
+      <Typography variant="h5" color="red" component="p">
           {article.Title}
         </Typography>
         <br/>

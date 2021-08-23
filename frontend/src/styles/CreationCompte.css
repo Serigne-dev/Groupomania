@@ -1,5 +1,5 @@
 .creationCompte{
-	border: thick double #32a1ce;
+	border: thick double red;
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;
@@ -11,15 +11,14 @@
 }
 
 .bodyCreationCompte{
-	background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)),
-                  url("");
+	
 }
 
 .footerCreerCompte{
 	margin-top: 130px;
 }
 
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 768px){
 	.creationCompte{
 		width: auto;
 	}

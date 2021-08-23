@@ -49,7 +49,6 @@ exports.login = (req, res, next) => {
     console.log("SQL : "+sql);
     db.query(sql, (err, results) => {
         if (!err && results.length != 0) {
-          console.log("employe trouve:"+ results[0].Password);
           bcrypt.compare(req.body.password, results[0].Password) // compare le mdp entré par l'utilisateur avec le hash de la bdd
         .then(valid => {
           if (!valid) {
@@ -68,10 +67,9 @@ exports.login = (req, res, next) => {
                 userPrenom: results[0].Prenom,
                 userEmail: results[0].Email,
                 userImg: results[0].Photo_url,
-
-              },// token contient l'id user en tant que payload
-              'RANDOM_TOKEN_SECRET', //chaine secrete de developpement temporaire pour encoder le token
-              { expiresIn: '24h' } // durée de validité du token
+              },
+              'RANDOM_TOKEN_SECRET', 
+              { expiresIn: '24h' } 
             )
           });
         })
