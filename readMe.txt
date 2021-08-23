@@ -10,7 +10,6 @@ Ouvrir le dossier Frontend dans le terminal de votre éditeur puis exécuter la 
 
 npm install
 puis
-
 npm start
 si le navigateur ne s'ouvre pas automatiquement allez à :
 http://localhost:3000/
@@ -18,17 +17,16 @@ http://localhost:3000/
 
 Backend
 Ouvrir le dossier Backend dans le terminal de votre éditeur puis exécuter la commande:
+npm install
 nodemon server
 http://localhost:4200/
 
 Base de données
-Se connecter au serveur MySql de votre choix. Exécuter la commande: CREATE DATABASE Groupomania; Vérifiez les identifiants dans le fichier config.json du dossier Backend puis importer le fichier socialnetwork.sql s'il vous a été fourni :
-
+Se connecter au serveur MySql de votre choix. Exécuter la commande: CREATE DATABASE Groupomania; 
 mysql -u root -p Groupomania < groupomania_quieries.sql
-Il faut remplacer groupomania_quieries.sql par le chemin du fichier dans votre machine. Vous pouvez lancer le projet sans importer le fichier.sql, au lancement de l'application un compte administrateur est automatiquement créé (les identifiants vous on été fourni dans un fichier Id_Admin).
+Vérifiez les identifiants dans le fichier  config_db.js du dossier Backend puis importer le fichier groupomania_queries.sql s'il vous a été fourni :
 
 Pour s'inscrire sur le reseau social de Groupomania, il vous faut renseigner :
-
 Nom
 Prenom
 Une adresse mail valide
@@ -40,3 +38,4 @@ des commentaires
 Le modérateur peut les supprimer.
 pour etre moderateur , entrez dans la base de données :
 UPDATE Employes SET isAdmmin=1 WHERE id="numero de l'id de l'employé"
+(l'admin par defaut est: serigne@gmail.com, mot de passe : Azerty123*)

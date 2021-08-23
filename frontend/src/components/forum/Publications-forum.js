@@ -47,13 +47,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PublicationsForum() {
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  const auth = useContext(AuthContext);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const[articles, setArticles] = useState([]);
   const[comment, setComment] = useState(null);
-  // Authentication context
-    const auth = useContext(AuthContext);
 
 
   function handleChangeComment(event) {
@@ -114,7 +112,7 @@ export default function PublicationsForum() {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({comment: comment, article: articleId, userId: userData.userId})
+          body: JSON.stringify({comment: comment, article: articleId, userId: auth.userId})
       })
           .then(res => res.json())
           .then(function(data){
@@ -133,8 +131,9 @@ export default function PublicationsForum() {
 
   function DeleteButtonArticle(props) {
     const articleId = props.id;
-    const userId = props.userId;
-    if(userId == 1){
+    const userAdmin = props.userAdmin;
+    console.log("admin:" + auth.userAdmin);
+    if(userAdmin == 1){
       return <IconButton aria-label="settings">
             <DeleteForeverIcon onClick={handleDelete(articleId)} />
           </IconButton>
@@ -168,7 +167,7 @@ export default function PublicationsForum() {
         }
 
         action={
-          <DeleteButtonArticle id={article.articleId} userId={userData.userId}/>
+          <DeleteButtonArticle id={article.articleId} userAdmin={auth.userAdmin}/>
         }
         
         title={article.Nom +" "+ article.Prenom}
@@ -233,7 +232,7 @@ export default function PublicationsForum() {
               <Typography className={classes.texte} color="textSecondary" gutterBottom>
                 {comment.Texte} 
               </Typography>
-              <DeleteButtonComment id={comment.Id} userId={userData.userId}/>
+              <DeleteButtonComment id={comment.Id} userId={auth.userId}/>
               </li>
 
               ))}

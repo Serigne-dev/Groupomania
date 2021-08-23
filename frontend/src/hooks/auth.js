@@ -10,17 +10,18 @@ export const useAuth = () => {
     const [userPrenom, setUserPrenom] = useState(false);
     const [userEmail, setUserEmail] = useState(false);
     const [userImg, setUserImg] = useState(false);
-    const [userIsAdmin, setisAdmin] = useState(false);
+    const [userAdmin, setUserAdmin] = useState(false);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
     // Login usCallback pour ne pas rentrer dans un cycle infinit
-    const login = useCallback((userId, userName, userPrenom, userEmail, userImg, token, expirationDate) => {
+    const login = useCallback((userId, userName, userPrenom, userEmail, userImg, userAdmin, token, expirationDate) => {
         setUserId(userId);
         setToken(token);
         setUserName(userName);
         setUserPrenom(userPrenom);
         setUserEmail(userEmail);
         setUserImg(userImg);
+        setUserAdmin(userAdmin);
 
         // Creér une date 24h dans le futur (validité de la session)
         const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
@@ -30,11 +31,6 @@ export const useAuth = () => {
         localStorage.setItem(
             "userData",
             JSON.stringify({
-                userId: userId,
-                userName: userName,
-                userPrenom: userPrenom,
-                userEmail: userEmail,
-                userImg: userImg,
                 token: token,
                 expiration: tokenExpirationDate.toISOString(),
             })
@@ -49,6 +45,7 @@ export const useAuth = () => {
         setUserPrenom(null);
         setUserEmail(null);
         setUserImg(null);
+        setUserAdmin(null);
         setTokenExpirationDate(null);
         localStorage.removeItem("userData");
     }, []);
@@ -69,11 +66,6 @@ export const useAuth = () => {
 
         if (
             storedData &&
-            storedData.userId &&
-            storedData.userName &&
-            storedData.userPrenom &&
-            storedData.userEmail &&
-            storedData.userImg &&
             storedData.token &&
             new Date(storedData.expiration) > new Date()
         ) {
@@ -81,5 +73,5 @@ export const useAuth = () => {
         }
     }, [login]);
 
-    return { userId, userName, userPrenom, userEmail, userImg, token, login, logout };
+    return { userId, userName, userPrenom, userEmail, userImg, userAdmin, token, login, logout };
 };

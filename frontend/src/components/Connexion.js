@@ -40,7 +40,7 @@ function handleSubmit(event) {
           })
           .then(function(data){
             if(data != null){
-                auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.userImg, data.token);
+                auth.login(data.userId, data.userName, data.userPrenom, data.userEmail, data.userImg, data.userAdmin, data.token);
                 history.push("/forum");
             }  
           })

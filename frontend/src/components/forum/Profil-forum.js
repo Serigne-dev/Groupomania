@@ -10,8 +10,8 @@ import '../../styles/profilForum.css'
 
 
 function ProfilForum() {
-  const userData = JSON.parse(localStorage.getItem('userData'));
  
+ const auth = useContext(AuthContext);
 
   const useStyles = makeStyles({
     root: {
@@ -26,8 +26,6 @@ function ProfilForum() {
   const [comment, setComment] = useState("");
   const [img, setImg] = useState("");
 
-  // Authentication context
-    const auth = useContext(AuthContext);
 
   function handleChangeTitle(event) {
     setTitle(event.target.value);
@@ -44,7 +42,7 @@ function ProfilForum() {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("userId", userData.userId);
+    formData.append("userId", auth.userId);
     formData.append("title", title);
     formData.append("commentaire", comment);
     formData.append("image", img);

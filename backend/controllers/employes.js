@@ -20,7 +20,6 @@ exports.signup = (req, res, next) => {
   try {
     console.log("signup");
     validationPassword(req.body.password);
-    console.log("password validé" + req.body.password);
     //const email = CryptoJS.MD5(req.body.email).toString();
     bcrypt.hash(req.body.password, 10).then((hash) => {
       const createEmployeQuery =
@@ -29,7 +28,6 @@ exports.signup = (req, res, next) => {
       const sql = mysql.format(createEmployeQuery, inserts);
       db.query(sql, (err, results) => {
         if (!err) {
-          console.log("sauvegarde de l'employe");
           res.status(201).json({ message: "Utilisateur créé !" });
         } else {
           res.status(400).json({ err });
@@ -54,12 +52,14 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
+          console.log("isadmin:" +results[0].isAdmmin);
           res.status(200).json({ //reponse 200 avec userID et token
             userId: results[0].id,
             userName: results[0].Nom, 
             userPrenom: results[0].Prenom,
             userEmail: results[0].Email,
             userImg: results[0].Photo_url,
+            userAdmin: results[0].isAdmmin,
             token: jwt.sign( // sign de json web token pour encoder nouveau token
               { 
                 userId: results[0].id ,
@@ -67,6 +67,7 @@ exports.login = (req, res, next) => {
                 userPrenom: results[0].Prenom,
                 userEmail: results[0].Email,
                 userImg: results[0].Photo_url,
+                userAdmin: results[0].isAdmmin,
               },
               'RANDOM_TOKEN_SECRET', 
               { expiresIn: '24h' } 
@@ -114,4 +115,40 @@ exports.delete = (req, res, next) => {
           res.status(400).json({ err });
         }
   });
+};
+
+exports.getUserById = (req, res, next) => {
+  const token = req.body.token;
+  var decoded = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+
+    const selectEmailQuery = "select * FROM Employes where id = ?";
+    const inserts = [decoded.userId];
+    const sql = mysql.format(selectEmailQuery, inserts);
+    db.query(sql, (err, results) => {
+         if (!err && results.length != 0) {
+          res.status(200).json({ //reponse 200 avec userID et token
+            userId: results[0].id,
+            userName: results[0].Nom, 
+            userPrenom: results[0].Prenom,
+            userEmail: results[0].Email,
+            userImg: results[0].Photo_url,
+            userAdmin: results[0].isAdmmin,
+            token: jwt.sign( // sign de json web token pour encoder nouveau token
+              { 
+                userId: results[0].id ,
+                userName: results[0].Nom, 
+                userPrenom: results[0].Prenom,
+                userEmail: results[0].Email,
+                userImg: results[0].Photo_url,
+                userAdmin: results[0].isAdmmin,
+
+              },// token contient l'id user en tant que payload
+              'RANDOM_TOKEN_SECRET', //chaine secrete de developpement temporaire pour encoder le token
+              { expiresIn: '24h' } // durée de validité du token
+            )
+          });
+        } else {
+          res.status(400).json({ err });
+        }
+      });
 };
