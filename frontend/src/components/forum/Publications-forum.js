@@ -178,7 +178,7 @@ export default function PublicationsForum() {
       <img src={article.Photo_url}/>
 
       <CardContent>
-      <Typography variant="h5" color="red" component="p">
+      <Typography variant="h5" color="textPrimary" component="p">
           {article.Title}
         </Typography>
         <br/>

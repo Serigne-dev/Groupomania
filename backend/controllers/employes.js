@@ -24,8 +24,8 @@ exports.signup = (req, res, next) => {
     //const email = CryptoJS.MD5(req.body.email).toString();
     bcrypt.hash(req.body.password, 10).then((hash) => {
       const createEmployeQuery =
-        "insert into Employes (Nom, Prenom, Email, Password, Photo_url) VALUES (?,?,?,?, ?)";
-      const inserts = [req.body.nom, req.body.prenom, req.body.email, hash, ""];
+        "insert into Employes (Nom, Prenom, Email, Password, Photo_url, isAdmmin) VALUES (?,?,?,?,?,?)";
+      const inserts = [req.body.nom, req.body.prenom, req.body.email, hash, "", false];
       const sql = mysql.format(createEmployeQuery, inserts);
       db.query(sql, (err, results) => {
         if (!err) {

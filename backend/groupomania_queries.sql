@@ -6,6 +6,7 @@ CREATE TABLE Employes (
  Email VARCHAR(30) NOT NULL,
  Password varchar(60) NOT NULL,
  Photo_url varchar(255) DEFAULT NULL,
+ isAdmmin boolean NOT NULL,
  PRIMARY KEY (id)
 )
 ENGINE=INNODB;

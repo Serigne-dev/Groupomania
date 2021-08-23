@@ -10,6 +10,7 @@ export const useAuth = () => {
     const [userPrenom, setUserPrenom] = useState(false);
     const [userEmail, setUserEmail] = useState(false);
     const [userImg, setUserImg] = useState(false);
+    const [userIsAdmin, setisAdmin] = useState(false);
     const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
     // Login usCallback pour ne pas rentrer dans un cycle infinit

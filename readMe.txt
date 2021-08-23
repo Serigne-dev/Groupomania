@@ -38,3 +38,5 @@ Une fois connecté vous pouvez voir les publications des utilisateurs et publier
 des articles
 des commentaires
 Le modérateur peut les supprimer.
+pour etre moderateur , entrez dans la base de données :
+UPDATE Employes SET isAdmmin=1 WHERE id="numero de l'id de l'employé"
