@@ -143,8 +143,8 @@ export default function PublicationsForum() {
 
   function DeleteButtonComment(props) {
     const commentId = props.id;
-    const userId = props.userId;
-    if(userId == 1){
+    const userAdmin = props.userAdmin;
+    if(userAdmin == 1){
       return <IconButton aria-label="settings">
             <DeleteForeverIcon onClick={handleDeleteComment(commentId)} />
           </IconButton>
@@ -232,7 +232,7 @@ export default function PublicationsForum() {
               <Typography className={classes.texte} color="textSecondary" gutterBottom>
                 {comment.Texte} 
               </Typography>
-              <DeleteButtonComment id={comment.Id} userId={auth.userId}/>
+              <DeleteButtonComment id={comment.Id} userAdmin={auth.userAdmin}/>
               </li>
 
               ))}
