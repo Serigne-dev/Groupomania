@@ -41,9 +41,3 @@ CREATE TABLE Commentaires (
 )
 ENGINE=INNODB;
 
-
-INSERT INTO Employes
-VALUES (1, 'admin', 'principal', 'admin@email.com', 'administrateur', '');
-
-INSERT INTO Article
-VALUES ('1','1','titre', 'je suis administrateur', '', now());
